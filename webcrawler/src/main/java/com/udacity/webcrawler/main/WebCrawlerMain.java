@@ -12,6 +12,7 @@ import com.udacity.webcrawler.profiler.ProfilerModule;
 
 import javax.inject.Inject;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.file.Path;
 import java.util.Objects;
 
@@ -43,14 +44,18 @@ public final class WebCrawlerMain {
     if (!config.getResultPath().isEmpty()) {
       resultWriter.write(Path.of(config.getResultPath()));
     } else {
-      resultWriter.write(new OutputStreamWriter(System.out));
+      Writer out = new OutputStreamWriter(System.out);
+      resultWriter.write(out);
+      out.flush();
     }
 
     // Write profiler output
     if (!config.getProfileOutputPath().isEmpty()) {
       profiler.writeData(Path.of(config.getProfileOutputPath()));
     } else {
-      profiler.writeData(new OutputStreamWriter(System.out));
+      Writer out = new OutputStreamWriter(System.out);
+      profiler.writeData(out);
+      out.flush();
     }
   }
 
@@ -66,4 +71,3 @@ public final class WebCrawlerMain {
     new WebCrawlerMain(config).run();
   }
 }
-
